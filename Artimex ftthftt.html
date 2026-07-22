@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artimex</title>
+    <style>
+        /* Stili Generali */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        /* Pagina 1: Home */
+        #page1 {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Pagina 2: Form (Sfondo Rosso) */
+        #page2 {
+            background-color: #ff3333;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 300px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+            font-size: 1rem;
+        }
+
+        #page2 button {
+            background-color: white;
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        #page2 button:hover {
+            background-color: #eeeeee;
+        }
+
+        /* Pagina 3: Ringraziamenti */
+        #page3 {
+            background-color: #222;
+            color: white;
+        }
+
+        #page3 button {
+            background-color: #ff3333;
+            color: white;
+        }
+
+        #page3 button:hover {
+            background-color: #cc2222;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGINA 1: Benvenuto -->
+    <div id="page1" class="page active">
+        <h1>Benvenuti su Artimex</h1>
+        <h2>(un sito che non serve a un emerito cazzo)</h2>
+        <button onclick="goToPage2()">Continua</button>
+    </div>
+
+    <!-- PAGINA 2: Modulo Dati -->
+    <div id="page2" class="page">
+        <form id="dataForm" onsubmit="goToPage3(event)">
+            <div class="form-group">
+                <label for="eta">Età:</label>
+                <input type="number" id="eta" min="18" max="100" required placeholder="Inserisci l'età">
+            </div>
+            
+            <div class="form-group">
+                <label for="sesso">Sesso:</label>
+                <select id="sesso" required>
+                    <option value="" disabled selected>Seleziona</option>
+                    <option value="M">Maschio</option>
+                    <option value="F">Femmina</option>
+                    <option value="Altro">Altro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="classe">Classe frequentata anno attuale:</label>
+                <input type="text" id="classe" required placeholder="Es. 5A, Università, Nessuna">
+            </div>
+
+            <button type="submit">Invia</button>
+        </form>
+    </div>
+
+    <!-- PAGINA 3: Conclusione -->
+    <div id="page3" class="page">
+        <h1>Grazie di avermi detto i cazzi tuoi</h1>
+        <br><br>
+        <button onclick="chiudiPagina()">Arrivederci</button>
+    </div>
+
+    <!-- ELEMENTI AUDIO (Suoni reali royalty-free da librerie pubbliche) -->
+    <!-- Musica di sottofondo (leggera ed elettronica) -->
+    <audio id="bgMusic" loop src="https://mixkit.co"></audio>
+    <!-- Urlo per la chiusura -->
+    <audio id="screamSound" src="https://google.com"></audio>
+
+    <script>
+        // Passa alla pagina del modulo
+        function goToPage2() {
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+        }
+
+        // Gestisce l'invio dei dati e passa alla pagina finale
+        function goToPage3(event) {
+            event.preventDefault(); // Impedisce il ricaricamento della pagina
+            
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page3').classList.add('active');
+
+            // Avvia la musica leggera di sottofondo
+            // I browser moderni bloccano l'audio automatico, ma qui l'utente ha appena cliccato "Invia", quindi partirà regolarmente
+            var music = document.getElementById('bgMusic');
+            music.volume = 0.3; // Volume leggero
+            music.play().catch(function(error) {
+                console.log("Riproduzione audio bloccata dal browser fino a interazione diretta.");
+            });
+        }
+
+        // Gestisce il tasto arrivederci (Urlo + Tentativo di chiusura)
+        function chiudiPagina() {
+            var scream = document.getElementById('screamSound');
+            var music = document.getElementById('bgMusic');
+
+            // Ferma la musica di sottofondo
+            music.pause();
+
+            // Riproduce l'urlo
+            scream.play();
+
+            // Attende la fine dell'urlo (circa 1.5 secondi) prima di provare a chiudere
+            setTimeout(function() {
+                // Nota tecnica: per motivi di sicurezza i browser permettono a window.close() 
+                // di funzionare SOLO se la pagina è stata aperta tramite uno script (es. window.open).
+                // Se aperta direttamente, viene mostrato un avviso o semplicemente non succede nulla.
+                window.close();
+                
+                // Soluzione alternativa se il browser blocca la chiusura: svuota la pagina
+                alert("Finestra chiusa! (Se vedi ancora questa schermata, il tuo browser ha bloccato la chiusura automatica della scheda).");
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
